@@ -7,7 +7,9 @@ This repository contains a collection of JavaScript examples and exercises organ
 ## Folder Structure
 
 ### 01_basics
+
 This folder contains introductory JavaScript concepts and examples, including:
+
 - Variables and constants (`let`, `const`, `var`)
 - Data types (strings, numbers, booleans, etc.)
 - Basic operators (arithmetic, comparison, logical)
@@ -15,7 +17,9 @@ This folder contains introductory JavaScript concepts and examples, including:
 - Loops (for, while, do-while)
 
 ### 02_basics
+
 This folder builds upon the foundational concepts and includes:
+
 - Functions (declaration, expression, arrow functions)
 - Arrays and array methods (`map`, `filter`, `reduce`)
 - Objects and object manipulation
@@ -23,22 +27,26 @@ This folder builds upon the foundational concepts and includes:
 - Event handling in JavaScript
 
 ## How to Use
+
 1. Clone the repository:
-    ```bash
-    git clone <repository-url>
-    ```
+   ```bash
+   git clone <repository-url>
+   ```
 2. Navigate to the desired folder:
-    ```bash
-    cd 01_basics
-    ```
+   ```bash
+   cd 01_basics
+   ```
 3. Open the files in your favorite code editor to explore the examples.
 
 ## Prerequisites
+
 - Basic understanding of programming concepts.
 - A modern web browser or Node.js installed for running JavaScript code.
 
 ## Contribution
+
 Feel free to contribute by adding new examples or improving existing ones. Submit a pull request with your changes.
 
 ## License
+
 This project is licensed under the MIT License.
