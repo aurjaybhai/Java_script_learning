@@ -32,4 +32,12 @@ JsUser.greeting = function () {
   console.log("Hello JS User");
 };
 
-console.log(JsUser.greeting());
+console.log(JsUser.greeting()); // this returns the "undefined bcoz function does not return anything"
+console.log(JsUser.greeting); // REFERENCES the function ... Just shows what the function looks like
+
+JsUser.greetingTwo = function () {
+  console.log(`Hello js user , ${this.name}`);
+};
+
+console.log(JsUser.greetingTwo());
+
