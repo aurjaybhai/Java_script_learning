@@ -1,6 +1,6 @@
 const accountId = 144553;
 let accountEmail = "duckbhai@duck.com";
-var accountPassword = "123456";
+var accountPassword = "123456"; // var has become depreciated
 accountCity = "Bihar";
 let accountState;
 
@@ -14,7 +14,7 @@ console.log(accountId);
 
 /* 
 Prefer not to use "var"
-because of issue in block scope and functional scope
+because of issue in block scope and functional scope(Weird Scoping)
 */
 
 console.table([
