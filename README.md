@@ -48,5 +48,74 @@ This folder builds upon the foundational concepts and includes:
 Feel free to contribute by adding new examples or improving existing ones. Submit a pull request with your changes.
 
 ## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## Updated Folder Structure
+
+### 01_basics
+
+This folder contains introductory JavaScript concepts and examples, including:
+
+- Variables and constants (`let`, `const`, `var`)
+- Data types (strings, numbers, booleans, etc.)
+- Basic operators (arithmetic, comparison, logical)
+- Control structures (if-else, switch-case)
+- Loops (for, while, do-while)
+
+### 02_intermediate
+
+This folder builds upon the foundational concepts and includes:
+
+- Functions (declaration, expression, arrow functions)
+- Arrays and array methods (`map`, `filter`, `reduce`)
+- Objects and object manipulation
+- DOM manipulation basics
+- Event handling in JavaScript
+
+### 03_advanced
+
+This folder contains advanced JavaScript topics, such as:
+
+- Promises and async/await
+- Error handling and debugging
+- Modules and imports/exports
+- Advanced DOM manipulation
+- Web APIs (e.g., Fetch API, LocalStorage)
+
+### 04_projects
+
+This folder includes small projects to practice JavaScript skills:
+
+- To-Do List App
+- Calculator
+- Weather App (using an API)
+- Quiz Application
+
+---
+
+## How to Use
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   ```
+2. Navigate to the desired folder:
+   ```bash
+   cd 03_advanced
+   ```
+3. Open the files in your favorite code editor to explore the examples.
+
+4. Run the code in a browser or using Node.js:
+   ```bash
+   node <filename>.js
+   ```
+
+---
+
+## Contribution
+
+Feel free to contribute by adding new examples, projects, or improving existing ones. Submit a pull request with your changes.
 
 This project is licensed under the MIT License.
