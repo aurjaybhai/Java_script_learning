@@ -1,6 +1,6 @@
 const accountId = 144553;
 let accountEmail = "duckbhai@duck.com";
-var accountPassword = "123456"; // var has become depreciated
+var accountPassword = "123456"; // (refer "var.js" file)var has become depreciated
 accountCity = "Bihar";
 let accountState;
 
