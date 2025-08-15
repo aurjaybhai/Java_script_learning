@@ -26,5 +26,31 @@ const obj4 = { 5: "a", 6: "b" };
 
 // const obj3 = { obj1, obj2 }; // this creates object in object {value1 , value2}
 
-const obj3 = Object.assign({}, obj1, obj2, obj4);         
+// const obj3 = Object.assign( {},obj1, obj2, obj4);
+
+const obj3 = { ...obj1, ...obj2 };
+
 console.log(obj3);
+
+// how does the data comes from database
+
+const users = [
+  {
+    id: 1,
+    email: "hr@email.com",
+  },
+  {
+    id: 2,
+    email: "sfme@email.com",
+  },
+];
+
+users[1].email; //  access the values through this method
+
+console.log(tinderUser);
+
+console.log(Object.keys(tinderUser)); // output will come inside the array
+console.log(Object.values(tinderUser)); // output will come inside the array
+console.log(Object.entries(tinderUser)); // array ke array
+
+console.log(tinderUser.hasOwnProperty("isLoggedIn"));
