@@ -9,7 +9,7 @@ console.log("rakesh");
 let name = "rakesh"; // string datatype
 let age = 26; // number datatype
 let isLoggedIn = false; // Boolean datatye
-let state;
+let state;  // way to declare the unddefined datatype
 
 // number => 2 to power 53
 // bigint
@@ -24,4 +24,4 @@ let state;
 console.log(typeof "rakesh"); // This returns the "string" type
 console.log(typeof age); // This returns the "number"
 console.log(typeof null); // This returns the "object" type
-console.log(typeof undefined); // This returns the "undefined" type
+console.log(typeof state); // This returns the "undefined" type
