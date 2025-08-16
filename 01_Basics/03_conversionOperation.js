@@ -4,8 +4,8 @@
 // console.log(typeof(score)); // #method_2
 
 // let valueInNumber = Number(score)
-// console.log(typeof valueInNumber);
-// console.log(valueInNumber);
+// console.log(typeof valueInNumber); // output will "number"
+// console.log(valueInNumber);  // output will be zero(0)
 
 // result output we recieved
 
@@ -13,7 +13,7 @@
 // "33abc" => NaN(not_A_Number)
 // true => 1; false => 0;
 
-let isloggedIn = 1;
+let isloggedIn = 1; // 1 is denoted as true
 
 let booleanIsLoggedIn = Boolean(isloggedIn);
 console.log(booleanIsLoggedIn);
@@ -43,13 +43,15 @@ let str2 = " world";
 let str3 = str1 + str2;
 console.log(str3);
 
-console.log("1" + 2);
-console.log(1 + "2");
-console.log("1" + 2 + 2);
-console.log(1 + 2 + "2");
+console.log("1" + 2); // 12
+console.log(1 + "2"); // 12
+console.log("1" + 2 + 2); // 122
+console.log(1 + 2 + "2"); // 1+2 = 3 // 32
 
 console.log((3+4) * 5 % 3);
 
 console.log(+true); //This will give me the output as "1"
 console.log(+""); //This will give me the output as "0"
+
+
 

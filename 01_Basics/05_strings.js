@@ -1,12 +1,11 @@
 const name = "jyothi";
 const repoCount = 52;
 
-// console.log(name + repoCount + " Value"); // this is not recommeded as it's not proffessional
+// (METHOD #1 )// console.log(name + repoCount + " Value"); // this is not recommeded as it's not proffessional
 
-console.log(`Hello my name is ${name} and my repo count is ${repoCount}`);
+console.log(`Hello my name is ${name} and my repo count is ${repoCount}`); // # Method #2
 
 const gameName = new String("chessBaseIndia");
-
 console.log(gameName[0]);
 
 console.log(gameName.__proto__);
@@ -23,23 +22,17 @@ console.log(newString);
 const anotherString = gameName.slice(-8, 4); // Method #2
 console.log(anotherString);
 
-const newStringOne = "    rakesh    "
+const newStringOne = "    rakesh    ";
 console.log(newStringOne);
 console.log(newStringOne.trim());
 
-const url = "https://hitesh.com/hitesh%20choudhary"
+const url = "https://hitesh.com/hitesh%20choudhary";
 
-console.log(url.replace('%20','-'))
+console.log(url.replace("%20", "-"));
 
-console.log(url.includes('hitesh'))
+console.log(url.includes("hitesh"));
 
-console.log(gameName.split('-'));
-
-
-
-
-
-
+console.log(gameName.split("-"));
 
 // console.log(gameName.__proto__);
 // console.log(gameName.toUpperCase);
