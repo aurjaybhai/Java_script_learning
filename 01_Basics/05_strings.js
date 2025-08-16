@@ -5,7 +5,7 @@ const repoCount = 52;
 
 console.log(`Hello my name is ${name} and my repo count is ${repoCount}`); // # Method #2
 
-const gameName = new String("chessBaseIndia");
+const gameName = new String("chessBaseIndia"); // object
 console.log(gameName[0]);
 
 console.log(gameName.__proto__);
@@ -22,7 +22,7 @@ console.log(newString);
 const anotherString = gameName.slice(-8, 4); // Method #2
 console.log(anotherString);
 
-const newStringOne = "    rakesh    ";
+const newStringOne = "rakesh";
 console.log(newStringOne);
 console.log(newStringOne.trim());
 
