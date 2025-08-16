@@ -54,3 +54,28 @@ console.log(Object.values(tinderUser)); // output will come inside the array
 console.log(Object.entries(tinderUser)); // array ke array
 
 console.log(tinderUser.hasOwnProperty("isLoggedIn"));
+
+const course = {
+  coursename: "javascript",
+  price: "₹999",
+  courseInstructor: "ht",
+};
+
+// const teacher = course.courseInstructor; old method
+// console.log(teacher);
+
+// ## new method
+
+const { courseInstructor } = course; // ##METHOD 1// if you think it's name is too long then you can you do below method also
+
+const { courseInstructor: instructor } = course; // ##METHOD 2
+console.log(courseInstructor); // # METHOD 1 OUTPUT
+console.log(instructor); // # METHOD 2 OUTPUT
+
+// {
+//   "name" : "rakesh",
+//   "coursename" : "js",
+//   "price" : "₹999",
+// }
+
+// [{}, {}, {}]; 
