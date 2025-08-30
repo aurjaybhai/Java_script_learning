@@ -2,9 +2,9 @@ const accountId = 144553;
 let accountEmail = "duckbhai@duck.com";
 var accountPassword = "123456"; // (refer "var.js" file)var has become depreciated
 accountCity = "Bihar";
-let accountState;
+let accountState;  //  you will get "undefined" output bcoz you have not specified anything
 
-// accountId = 2 // not allowed
+// accountId = 2 // not allowed bcoz it's constant see the line 1
 
 accountEmail = "hc@hc.com";
 accountPassword = "1655";
