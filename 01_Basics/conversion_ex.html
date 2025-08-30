@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Type Conversion</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        color: #333;
+      }
+      .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      h2 {
+        color: #3498db;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+      }
+      .code {
+        background-color: #272822;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 5px;
+        font-family: "Fira Code", monospace;
+        overflow-x: auto;
+        margin: 15px 0;
+      }
+      .result {
+        background-color: #edf7ff;
+        padding: 15px;
+        border-left: 4px solid #3498db;
+        margin: 15px 0;
+        border-radius: 0 5px 5px 0;
+      }
+      .explanation {
+        background-color: #fff8e1;
+        padding: 15px;
+        border-left: 4px solid #ffc107;
+        margin: 15px 0;
+        border-radius: 0 5px 5px 0;
+      }
+      .highlight {
+        background-color: #ffeb3b;
+        padding: 2px 4px;
+        border-radius: 3px;
+      }
+      .operator-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+      }
+      .operator-table th,
+      .operator-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      .operator-table th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>JavaScript Type Conversion & Operations</h1>
+
+    <div class="container">
+      <div class="card">
+        <h2>Type Conversion Examples</h2>
+
+        <div class="code">let value = Number(null);</div>
+        <div class="result">Result: null → 0 (number)</div>
+        <div class="explanation">
+          When converting <span class="highlight">null</span> to a number,
+          JavaScript returns <span class="highlight">0</span>.
+        </div>
+
+        <div class="code">let value = Boolean(1);</div>
+        <div class="result">Result: 1 → true (boolean)</div>
+        <div class="explanation">
+          When converting numbers to boolean:
+          <span class="highlight">0 → false</span>, any other number →
+          <span class="highlight">true</span>.
+        </div>
+
+        <div class="code">let value = String(33);</div>
+        <div class="result">Result: 33 → "33" (string)</div>
+        <div class="explanation">
+          Converting a number to a string results in the string representation
+          of that number.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Arithmetic Operations</h2>
+
+        <div class="code">console.log(1 + 2 + "2");</div>
+        <div class="result">Result: "32" (string)</div>
+        <div class="explanation">
+          Operations are performed left to right:<br />
+          1. <span class="highlight">1 + 2 = 3</span> (numeric addition)<br />
+          2. <span class="highlight">3 + "2" = "32"</span> (string
+          concatenation)
+        </div>
+
+        <div class="code">console.log(((3 + 4) * 5) % 3);</div>
+        <div class="result">Result: 2 (number)</div>
+        <div class="explanation">
+          Step by step calculation:<br />
+          1. <span class="highlight">(3 + 4) = 7</span><br />
+          2. <span class="highlight">7 * 5 = 35</span><br />
+          3. <span class="highlight">35 % 3 = 2</span> (remainder when 35 is
+          divided by 3)
+        </div>
+
+        <div class="code">console.log(+true); // Output: 1</div>
+        <div class="code">console.log(+""); // Output: 0</div>
+        <div class="result">Unary plus converts values to numbers</div>
+        <div class="explanation">
+          The unary plus operator (<span class="highlight">+</span>) attempts to
+          convert the operand to a number:<br />
+          - <span class="highlight">+true</span> converts boolean true to number
+          1<br />
+          - <span class="highlight">+""</span> converts empty string to number 0
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>JavaScript Type Conversion Rules</h2>
+
+      <table class="operator-table">
+        <tr>
+          <th>Original Value</th>
+          <th>Converted to Number</th>
+          <th>Converted to Boolean</th>
+          <th>Converted to String</th>
+        </tr>
+        <tr>
+          <td>null</td>
+          <td>0</td>
+          <td>false</td>
+          <td>"null"</td>
+        </tr>
+        <tr>
+          <td>undefined</td>
+          <td>NaN</td>
+          <td>false</td>
+          <td>"undefined"</td>
+        </tr>
+        <tr>
+          <td>true</td>
+          <td>1</td>
+          <td>true</td>
+          <td>"true"</td>
+        </tr>
+        <tr>
+          <td>false</td>
+          <td>0</td>
+          <td>false</td>
+          <td>"false"</td>
+        </tr>
+        <tr>
+          <td>"" (empty string)</td>
+          <td>0</td>
+          <td>false</td>
+          <td>""</td>
+        </tr>
+        <tr>
+          <td>"123"</td>
+          <td>123</td>
+          <td>true</td>
+          <td>"123"</td>
+        </tr>
+        <tr>
+          <td>"123abc"</td>
+          <td>NaN</td>
+          <td>true</td>
+          <td>"123abc"</td>
+        </tr>
+        <tr>
+          <td>0</td>
+          <td>0</td>
+          <td>false</td>
+          <td>"0"</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li>
+          JavaScript performs implicit type conversion (coercion) in operations
+          involving different types
+        </li>
+        <li>
+          The <span class="highlight">+</span> operator favors string
+          concatenation when one operand is a string
+        </li>
+        <li>
+          Other arithmetic operators (<span class="highlight">- * / %</span>)
+          convert operands to numbers
+        </li>
+        <li>
+          Unary plus (<span class="highlight">+</span>) can be used to
+          explicitly convert values to numbers
+        </li>
+        <li>
+          Understanding type conversion is essential to avoid unexpected
+          behavior in JavaScript
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -2,14 +2,14 @@
 
 // alert( 3 + 3 ) // we are using nodejs, not browser so it will throw error
 
-console.log(3 + 3); // code readability should be high
+console.log(3 + 3); // code readability should be high(6)
 
 console.log("rakesh");
 
 let name = "rakesh"; // string datatype
 let age = 26; // number datatype
-let isLoggedIn = false; // Boolean datatye
-let state;  // way to declare the unddefined datatype
+let isLoggedIn = false; // Boolean datatype
+let state; // way to declare the undefined datatype
 
 // number => 2 to power 53
 // bigint
