@@ -78,4 +78,5 @@ console.log(instructor); // # METHOD 2 OUTPUT
 //   "price" : "₹999",
 // }
 
-// [{}, {}, {}]; 
+// [{}, {}, {}];
+
