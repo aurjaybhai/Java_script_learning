@@ -6,7 +6,7 @@ const repoCount = 52;
 console.log(`Hello my name is ${name} and my repo count is ${repoCount}`); // # Method #2
 
 const gameName = new String("chessBaseIndia"); // object
-console.log(gameName[0]);
+console.log(gameName[0]); // It prints the output as "c"
 
 console.log(gameName.__proto__);
 
