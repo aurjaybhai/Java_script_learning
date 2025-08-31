@@ -8,7 +8,7 @@ console.log(`Hello my name is ${name} and my repo count is ${repoCount}`); // # 
 const gameName = new String("chessBaseIndia"); // object
 console.log(gameName[0]); // It prints the output as "c"
 
-console.log(gameName.__proto__);
+console.log(gameName.__proto__); // collection of properties(like toolbox) like Uppercase
 
 console.log(gameName.length);
 console.log(gameName.toUpperCase());
@@ -22,9 +22,10 @@ console.log(newString);
 const anotherString = gameName.slice(-8, 4); // Method #2
 console.log(anotherString);
 
-const newStringOne = "rakesh";
+const newStringOne = " rakesh";
 console.log(newStringOne);
-console.log(newStringOne.trim());
+console.log(newStringOne.trim()); // trim() removes whitespace from both ends of a string
+// Useful for cleaning up user input in forms
 
 const url = "https://hitesh.com/hitesh%20choudhary";
 
