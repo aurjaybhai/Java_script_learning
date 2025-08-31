@@ -11,66 +11,173 @@
         padding: 0;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
+
+      :root {
+        /* Light mode colors */
+        --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        --container-bg: white;
+        --text-primary: #333;
+        --text-secondary: #6a11cb;
+        --accent-primary: #2575fc;
+        --accent-secondary: #6a11cb;
+        --explanation-bg: #f8f9fa;
+        --code-bg: #272822;
+        --code-text: #f8f8f2;
+        --key-points-bg: #e8f4fd;
+        --try-it-bg: #ffeb3b;
+        --try-it-text: #333;
+        --character-bg: #2575fc;
+        --character-text: white;
+        --input-border: #6a11cb;
+        --button-bg: #6a11cb;
+        --button-text: white;
+        --button-hover: #2575fc;
+        --shadow: rgba(0, 0, 0, 0.2);
+        --border-accent: #6a11cb;
+      }
+
+      [data-theme="dark"] {
+        /* Dark mode colors */
+        --bg-gradient: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+        --container-bg: #1e1e2e;
+        --text-primary: #e0e0e0;
+        --text-secondary: #bb86fc;
+        --accent-primary: #6c5ce7;
+        --accent-secondary: #a29bfe;
+        --explanation-bg: #2d2d3d;
+        --code-bg: #1a1a1a;
+        --code-text: #f8f8f2;
+        --key-points-bg: #2a2a3a;
+        --try-it-bg: #3d3d4d;
+        --try-it-text: #e0e0e0;
+        --character-bg: #6c5ce7;
+        --character-text: white;
+        --input-border: #a29bfe;
+        --button-bg: #6c5ce7;
+        --button-text: white;
+        --button-hover: #5f3dc4;
+        --shadow: rgba(0, 0, 0, 0.4);
+        --border-accent: #a29bfe;
+      }
+
       body {
-        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-        color: #333;
+        background: var(--bg-gradient);
+        color: var(--text-primary);
         padding: 20px;
         min-height: 100vh;
+        transition: all 0.3s ease;
       }
+
       .container {
         max-width: 1000px;
         margin: 0 auto;
-        background: white;
+        background: var(--container-bg);
         border-radius: 15px;
         padding: 30px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 30px var(--shadow);
+        transition: all 0.3s ease;
       }
+
+      .theme-toggle {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        background: var(--accent-primary);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px var(--shadow);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .theme-toggle:hover {
+        background: var(--button-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px var(--shadow);
+      }
+
+      .theme-icon {
+        font-size: 16px;
+      }
+
       header {
         text-align: center;
         margin-bottom: 30px;
+        position: relative;
       }
+
       h1 {
-        color: #2575fc;
+        color: var(--accent-primary);
         margin-bottom: 10px;
+        transition: color 0.3s ease;
       }
+
       .subtitle {
-        color: #6a11cb;
+        color: var(--text-secondary);
         font-size: 1.2em;
         margin-bottom: 20px;
+        transition: color 0.3s ease;
       }
+
       .explanation {
-        background: #f8f9fa;
+        background: var(--explanation-bg);
         padding: 20px;
         border-radius: 10px;
         margin-bottom: 30px;
-        border-left: 5px solid #6a11cb;
+        border-left: 5px solid var(--border-accent);
+        transition: all 0.3s ease;
       }
+
+      .explanation h2 {
+        color: var(--accent-primary);
+        margin-bottom: 15px;
+        transition: color 0.3s ease;
+      }
+
       .code-block {
-        background: #272822;
-        color: #f8f8f2;
+        background: var(--code-bg);
+        color: var(--code-text);
         padding: 20px;
         border-radius: 10px;
         margin: 20px 0;
         overflow-x: auto;
         font-family: "Fira Code", monospace;
+        transition: all 0.3s ease;
       }
+
       .visualization {
         display: flex;
         flex-direction: column;
         align-items: center;
         margin: 30px 0;
       }
+
+      .visualization h3 {
+        color: var(--accent-primary);
+        margin-bottom: 20px;
+        transition: color 0.3s ease;
+      }
+
       .string-box {
         width: 100%;
         padding: 15px;
-        background: #6a11cb;
+        background: var(--accent-secondary);
         color: white;
         border-radius: 8px;
         text-align: center;
         margin: 10px 0;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 8px var(--shadow);
         position: relative;
+        transition: all 0.3s ease;
       }
+
       .character {
         display: inline-block;
         width: 40px;
@@ -78,10 +185,13 @@
         line-height: 40px;
         text-align: center;
         margin: 5px;
-        background: #2575fc;
+        background: var(--character-bg);
+        color: var(--character-text);
         border-radius: 5px;
         position: relative;
+        transition: all 0.3s ease;
       }
+
       .index {
         position: absolute;
         top: -20px;
@@ -90,6 +200,7 @@
         font-size: 12px;
         color: #ffeb3b;
       }
+
       .negative-index {
         position: absolute;
         bottom: -20px;
@@ -98,75 +209,153 @@
         font-size: 12px;
         color: #ff6b6b;
       }
+
       .slice-range {
-        background: #ffeb3b;
-        color: #333;
+        background: var(--try-it-bg);
+        color: var(--try-it-text);
         border-radius: 5px;
-        padding: 5px;
+        padding: 15px;
         margin-top: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px var(--shadow);
       }
+
       .try-it {
-        background: #ffeb3b;
+        background: var(--try-it-bg);
+        color: var(--try-it-text);
         padding: 20px;
         border-radius: 10px;
         margin: 20px 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px var(--shadow);
       }
+
       .try-it h3 {
-        color: #333;
+        color: var(--try-it-text);
         margin-bottom: 15px;
+        transition: color 0.3s ease;
       }
+
       .try-it input {
         padding: 10px;
-        border: 2px solid #6a11cb;
+        border: 2px solid var(--input-border);
         border-radius: 5px;
         width: 100%;
         margin-bottom: 15px;
+        background: var(--container-bg);
+        color: var(--text-primary);
+        transition: all 0.3s ease;
       }
+
+      .try-it input:focus {
+        outline: none;
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+      }
+
       .try-it button {
-        background: #6a11cb;
-        color: white;
+        background: var(--button-bg);
+        color: var(--button-text);
         border: none;
         padding: 10px 15px;
         border-radius: 5px;
         cursor: pointer;
         margin: 5px;
-        transition: background 0.3s;
+        transition: all 0.3s ease;
+        font-weight: 600;
       }
+
       .try-it button:hover {
-        background: #2575fc;
+        background: var(--button-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px var(--shadow);
       }
+
       .output {
-        background: #272822;
-        color: #f8f8f2;
+        background: var(--code-bg);
+        color: var(--code-text);
         padding: 15px;
         border-radius: 5px;
         margin-top: 15px;
         min-height: 100px;
+        transition: all 0.3s ease;
+        font-family: "Fira Code", monospace;
       }
+
       .key-points {
-        background: #e8f4fd;
+        background: var(--key-points-bg);
         padding: 20px;
         border-radius: 10px;
         margin: 20px 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px var(--shadow);
       }
+
       .key-points h3 {
-        color: #2575fc;
+        color: var(--accent-primary);
         margin-bottom: 15px;
+        transition: color 0.3s ease;
       }
+
       .key-points ul {
         margin-left: 20px;
       }
+
       .key-points li {
         margin-bottom: 10px;
+        color: var(--text-primary);
+        transition: color 0.3s ease;
       }
+
+      .key-points code {
+        background: var(--code-bg);
+        color: var(--code-text);
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 0.9em;
+      }
+
       footer {
         text-align: center;
         margin-top: 30px;
-        color: #6a11cb;
+        color: var(--text-secondary);
+        transition: color 0.3s ease;
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .theme-toggle {
+          top: 10px;
+          right: 15px;
+          padding: 10px 16px;
+          font-size: 12px;
+        }
+
+        .container {
+          padding: 20px;
+        }
+
+        .character {
+          width: 35px;
+          height: 35px;
+          line-height: 35px;
+          margin: 3px;
+        }
+      }
+
+      /* Animation for theme transition */
+      * {
+        transition: background-color 0.3s ease, color 0.3s ease,
+          border-color 0.3s ease;
       }
     </style>
   </head>
   <body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+      <span class="theme-icon" id="themeIcon">🌙</span>
+      <span id="themeText">Dark Mode</span>
+    </button>
+
     <div class="container">
       <header>
         <h1>JavaScript slice() Method Explained</h1>
@@ -292,6 +481,75 @@
     </div>
 
     <script>
+      // Theme management
+      function toggleTheme() {
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+        document.documentElement.setAttribute("data-theme", newTheme);
+
+        // Update button text and icon
+        const themeIcon = document.getElementById("themeIcon");
+        const themeText = document.getElementById("themeText");
+
+        if (newTheme === "dark") {
+          themeIcon.textContent = "☀️";
+          themeText.textContent = "Light Mode";
+        } else {
+          themeIcon.textContent = "🌙";
+          themeText.textContent = "Dark Mode";
+        }
+
+        // Store preference
+        if (typeof Storage !== "undefined") {
+          try {
+            localStorage.setItem("theme", newTheme);
+          } catch (e) {
+            // Fallback if localStorage is not available
+            console.log("Theme preference not saved");
+          }
+        }
+      }
+
+      // Initialize theme on page load
+      function initializeTheme() {
+        let savedTheme = "light";
+
+        // Try to get saved theme
+        if (typeof Storage !== "undefined") {
+          try {
+            savedTheme = localStorage.getItem("theme") || "light";
+          } catch (e) {
+            // Fallback if localStorage is not available
+            savedTheme = "light";
+          }
+        }
+
+        // Check system preference if no saved theme
+        if (
+          savedTheme === "light" &&
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+          savedTheme = "dark";
+        }
+
+        document.documentElement.setAttribute("data-theme", savedTheme);
+
+        // Update button text and icon
+        const themeIcon = document.getElementById("themeIcon");
+        const themeText = document.getElementById("themeText");
+
+        if (savedTheme === "dark") {
+          themeIcon.textContent = "☀️";
+          themeText.textContent = "Light Mode";
+        } else {
+          themeIcon.textContent = "🌙";
+          themeText.textContent = "Dark Mode";
+        }
+      }
+
       function sliceString() {
         const inputString = document.getElementById("inputString").value;
         const startIndex = parseInt(
@@ -328,10 +586,34 @@
             `;
       }
 
-      // Initialize the demo
+      // Initialize everything when page loads
       document.addEventListener("DOMContentLoaded", function () {
+        initializeTheme();
         sliceString();
       });
+
+      // Listen for system theme changes
+      if (window.matchMedia) {
+        window
+          .matchMedia("(prefers-color-scheme: dark)")
+          .addEventListener("change", (e) => {
+            if (!localStorage.getItem("theme")) {
+              const newTheme = e.matches ? "dark" : "light";
+              document.documentElement.setAttribute("data-theme", newTheme);
+
+              const themeIcon = document.getElementById("themeIcon");
+              const themeText = document.getElementById("themeText");
+
+              if (newTheme === "dark") {
+                themeIcon.textContent = "☀️";
+                themeText.textContent = "Light Mode";
+              } else {
+                themeIcon.textContent = "🌙";
+                themeText.textContent = "Dark Mode";
+              }
+            }
+          });
+      }
     </script>
   </body>
 </html>
