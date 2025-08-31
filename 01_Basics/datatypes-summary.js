@@ -8,8 +8,8 @@ const scoreValure = 100.3;
 const isLoggedIn = false;
 const outsideTemp = null;
 let userEmail; // undefined
-
-const id = Symbol("123");
+// Think of Symbols Like Social Security Numbers
+const id = Symbol("123"); // Imagine two people with the same name "John Smith". Even though they have the same name, they have different Social Security Numbers.
 const anotherId = Symbol("123");
 
 console.log(id === anotherId);
@@ -30,7 +30,7 @@ const myFunction = function () {
   console.log("Hello World");
 };
 
-console.log(typeof anotherId);
+console.log("Type of another ID :", typeof anotherId);
 
 // https://262.ecma-international.org/5.1/#sec-11.4.3
 
@@ -53,8 +53,7 @@ let userOne = {
 
 let userTwo = userOne;
 
+userTwo.email = "aurbhai@google.com";
 
-userTwo.email = "aurbhai@google.com"
-
-console.log(userOne.email);
-console.log(userTwo.email);
+console.log(userOne.email); // aurbhai@google.com
+console.log(userTwo.email); // aurbhai@google.com

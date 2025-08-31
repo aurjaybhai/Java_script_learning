@@ -19,8 +19,8 @@ console.log(newCreate_date.toLocaleDateString());
 
 let myTimeStamp = Date.now()
 
-console.log(myTimeStamp);
-
+console.log(myTimeStamp); // It will print the milliseconds
+// Comparsion hamesa milliseconds me karna
 console.log(myCreatedDate.getTime());
 console.log(Math.floor(Date.now()/1000));
 

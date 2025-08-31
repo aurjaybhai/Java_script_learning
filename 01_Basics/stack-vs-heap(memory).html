@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Memory: Interactive Tutor</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0f0f23 0%,
+          #1a1a2e 50%,
+          #16213e 100%
+        );
+        color: #ffffff;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+
+      .subtitle {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #a0a0a0;
+        margin-bottom: 30px;
+      }
+
+      @keyframes glow {
+        from {
+          filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.5));
+        }
+        to {
+          filter: drop-shadow(0 0 20px rgba(78, 205, 196, 0.8));
+        }
+      }
+
+      .progress-bar {
+        background: rgba(255, 255, 255, 0.1);
+        height: 8px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.5s ease;
+        width: 0%;
+      }
+
+      .scene-counter {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+        color: #ffd93d;
+      }
+
+      .memory-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .memory-section {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 25px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+
+      .memory-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .stack-title {
+        color: #ff6b6b;
+      }
+
+      .heap-title {
+        color: #4ecdc4;
+      }
+
+      .variable-box {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 15px;
+        margin: 10px 0;
+        border-left: 4px solid;
+        transition: all 0.5s ease;
+        transform: translateX(-50px);
+        opacity: 0;
+      }
+
+      .variable-box.show {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .primitive {
+        border-left-color: #ff6b6b;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 107, 107, 0.1),
+          rgba(255, 107, 107, 0.05)
+        );
+      }
+
+      .reference {
+        border-left-color: #4ecdc4;
+        background: linear-gradient(
+          90deg,
+          rgba(78, 205, 196, 0.1),
+          rgba(78, 205, 196, 0.05)
+        );
+      }
+
+      .var-name {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #ffd93d;
+      }
+
+      .var-value {
+        margin-top: 8px;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+      }
+
+      .memory-address {
+        font-size: 0.8rem;
+        color: #a0a0a0;
+        margin-top: 5px;
+      }
+
+      .object-detail {
+        background: rgba(78, 205, 196, 0.15);
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 10px;
+        border: 1px dashed #4ecdc4;
+      }
+
+      .movie-frame {
+        border: 3px solid #ffd93d;
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px 0;
+        background: rgba(0, 0, 0, 0.4);
+        box-shadow: 0 0 30px rgba(255, 217, 61, 0.3);
+      }
+
+      .scene-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #ffd93d;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .code-line {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        border-left: 3px solid #ffd93d;
+        font-size: 1.1rem;
+        animation: code-highlight 1s ease-in-out;
+      }
+
+      @keyframes code-highlight {
+        0% {
+          background: rgba(255, 217, 61, 0.3);
+        }
+        100% {
+          background: rgba(0, 0, 0, 0.5);
+        }
+      }
+
+      .explanation {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 107, 107, 0.1),
+          rgba(78, 205, 196, 0.1)
+        );
+        border-radius: 15px;
+        padding: 25px;
+        margin: 20px 0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+
+      .tutor-controls {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 30px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .question {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #ffd93d;
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border: none;
+        color: white;
+        padding: 15px 30px;
+        margin: 0 15px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+      }
+
+      .btn-yes {
+        background: linear-gradient(45deg, #4ecdc4, #44a08d);
+      }
+
+      .btn-no {
+        background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+      }
+
+      .btn-start {
+        background: linear-gradient(45deg, #ffd93d, #ff9a9e);
+        color: #000;
+        font-size: 1.2rem;
+        padding: 18px 35px;
+      }
+
+      .help-section {
+        background: rgba(255, 107, 107, 0.1);
+        border: 2px solid #ff6b6b;
+        border-radius: 15px;
+        padding: 25px;
+        margin: 20px 0;
+        display: none;
+      }
+
+      .help-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #ff6b6b;
+        margin-bottom: 15px;
+      }
+
+      .help-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .help-btn {
+        background: rgba(255, 107, 107, 0.2);
+        border: 1px solid #ff6b6b;
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .help-btn:hover {
+        background: rgba(255, 107, 107, 0.4);
+        transform: scale(1.02);
+      }
+
+      .simple-explanation {
+        background: rgba(78, 205, 196, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        display: none;
+      }
+
+      .connection-animation {
+        position: relative;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #4ecdc4, transparent);
+        margin: 15px 0;
+        border-radius: 2px;
+        animation: pulse-line 2s infinite;
+      }
+
+      @keyframes pulse-line {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        .memory-container {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .title {
+          font-size: 2rem;
+        }
+
+        .btn {
+          padding: 12px 20px;
+          margin: 5px;
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">🎓 Interactive JavaScript Memory Tutor</h1>
+      <p class="subtitle">
+        Learn at your own pace with your personal JS mentor
+      </p>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+      </div>
+
+      <div class="scene-counter" id="scene-counter">
+        Ready to start your learning journey?
+      </div>
+
+      <div class="memory-container">
+        <div class="memory-section">
+          <h2 class="memory-title stack-title">📚 STACK Memory</h2>
+          <p style="text-align: center; color: #a0a0a0; margin-bottom: 20px">
+            Fast access • Fixed size • Primitive values
+          </p>
+          <div id="stack-content"></div>
+        </div>
+
+        <div class="memory-section">
+          <h2 class="memory-title heap-title">🏗️ HEAP Memory</h2>
+          <p style="text-align: center; color: #a0a0a0; margin-bottom: 20px">
+            Dynamic size • Objects live here
+          </p>
+          <div id="heap-content"></div>
+        </div>
+      </div>
+
+      <div id="content-area">
+        <div class="tutor-controls">
+          <div class="question">
+            🚀 Ready to understand JavaScript memory like a pro developer?
+          </div>
+          <button class="btn btn-start" onclick="startTutorial()">
+            Start Learning Journey
+          </button>
+          <div style="margin-top: 15px; font-size: 0.9rem; color: #a0a0a0">
+            ✨ Interactive • Step-by-step • Ask questions anytime
+          </div>
+        </div>
+      </div>
+
+      <div class="help-section" id="help-section">
+        <div class="help-title">🤔 What part didn't you understand?</div>
+        <div class="help-options">
+          <button class="help-btn" onclick="explainConcept('stack')">
+            📚 What is Stack?
+          </button>
+          <button class="help-btn" onclick="explainConcept('heap')">
+            🏗️ What is Heap?
+          </button>
+          <button class="help-btn" onclick="explainConcept('primitive')">
+            🔤 Primitive Types?
+          </button>
+          <button class="help-btn" onclick="explainConcept('reference')">
+            🔗 Reference Types?
+          </button>
+          <button class="help-btn" onclick="explainConcept('copy')">
+            📋 Why Copy Behavior?
+          </button>
+          <button class="help-btn" onclick="explainConcept('address')">
+            📍 Memory Addresses?
+          </button>
+        </div>
+        <div class="simple-explanation" id="simple-explanation"></div>
+        <div style="text-align: center; margin-top: 20px">
+          <button class="btn btn-yes" onclick="continueAfterHelp()">
+            Got it! Continue →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentScene = 0;
+      let isWaitingForResponse = false;
+
+      const scenes = [
+        {
+          title: "🎬 Scene 1: Creating Your First Variable",
+          code: 'let myname = "rakeshchodotcom";',
+          stack: [
+            {
+              name: "myname",
+              value: '"rakeshchodotcom"',
+              type: "primitive",
+              address: "0x001",
+            },
+          ],
+          heap: [],
+          explanation: `
+                    <h3>🎭 Welcome to the JavaScript Memory Theater!</h3>
+                    <p><strong>What just happened:</strong> JavaScript created a variable called 'myname' and stored the string value directly in Stack memory.</p>
+                    <p><strong>Key Point:</strong> Primitive values (strings, numbers, booleans) live directly in the Stack. No references, no complications!</p>
+                    <div style="background: rgba(255, 217, 61, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px;">
+                        <strong>🧠 Think of Stack like your desk:</strong> Small, important items you use frequently stay right on top where you can grab them quickly!
+                    </div>
+                `,
+          question:
+            "Do you understand how primitive values are stored in Stack memory?",
+        },
+        {
+          title: "🎬 Scene 2: Making a Copy",
+          code: "let anotherName = myname;",
+          stack: [
+            {
+              name: "myname",
+              value: '"rakeshchodotcom"',
+              type: "primitive",
+              address: "0x001",
+            },
+            {
+              name: "anotherName",
+              value: '"rakeshchodotcom"',
+              type: "primitive",
+              address: "0x002",
+              highlight: true,
+            },
+          ],
+          heap: [],
+          explanation: `
+                    <h3>📋 The Great Copy Operation!</h3>
+                    <p><strong>What happened:</strong> JavaScript created a COMPLETELY SEPARATE copy of the value for 'anotherName'.</p>
+                    <p><strong>Notice:</strong> Both variables have different memory addresses (0x001 vs 0x002) but same value.</p>
+                    <div style="background: rgba(78, 205, 196, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px;">
+                        <strong>🏠 Real-world analogy:</strong> It's like photocopying a document. You have two separate papers with the same content!
+                    </div>
+                `,
+          question:
+            "Do you understand why primitive variables get completely separate copies?",
+        },
+        {
+          title: "🎬 Scene 3: Independence Test",
+          code: 'anotherName = "david";',
+          stack: [
+            {
+              name: "myname",
+              value: '"rakeshchodotcom"',
+              type: "primitive",
+              address: "0x001",
+            },
+            {
+              name: "anotherName",
+              value: '"david"',
+              type: "primitive",
+              address: "0x002",
+              changed: true,
+            },
+          ],
+          heap: [],
+          explanation: `
+                    <h3>🔓 Perfect Independence!</h3>
+                    <p><strong>Beautiful Result:</strong> Changing 'anotherName' doesn't affect 'myname' at all!</p>
+                    <p><strong>Why:</strong> They're completely separate values in different memory locations.</p>
+                    <div style="background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px;">
+                        <strong>💡 Pro Developer Insight:</strong> This is why primitives are "safe" - no unexpected side effects when you modify them!
+                    </div>
+                `,
+          question:
+            "Are you clear on why changing one primitive variable doesn't affect another?",
+        },
+        {
+          title: "🎬 Scene 4: Enter the Object World",
+          code: 'let userOne = { email: "user@google.com", upi: "user@upi" };',
+          stack: [
+            {
+              name: "myname",
+              value: '"rakeshchodotcom"',
+              type: "primitive",
+              address: "0x001",
+            },
+            {
+              name: "anotherName",
+              value: '"david"',
+              type: "primitive",
+              address: "0x002",
+            },
+            {
+              name: "userOne",
+              value: "→ 0xABC123",
+              type: "reference",
+              address: "0x003",
+              highlight: true,
+            },
+          ],
+          heap: [
+            {
+              address: "0xABC123",
+              content: '{ email: "user@google.com", upi: "user@upi" }',
+              properties: [
+                { key: "email", value: '"user@google.com"' },
+                { key: "upi", value: '"user@upi"' },
+              ],
+              highlight: true,
+            },
+          ],
+          explanation: `
+                    <h3>🏗️ Objects: Too Big for Stack!</h3>
+                    <p><strong>Game Changer:</strong> Objects are complex and can grow, so JavaScript stores them in Heap memory.</p>
+                    <p><strong>The Trick:</strong> 'userOne' in Stack only holds a REFERENCE (like a GPS coordinate) pointing to the actual object in Heap.</p>
+                    <div style="background: rgba(78, 205, 196, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px;">
+                        <strong>🏠 Think of it like:</strong> Your variable is like a sticky note with an address written on it. The actual house (object) is at that address!
+                    </div>
+                `,
+          question:
+            "Do you understand the difference between storing primitives vs objects in memory?",
+        },
+        {
+          title: "🎬 Scene 5: The Reference Copy (The Plot Twist!)",
+          code: "let userTwo = userOne;",
+          stack: [
+            {
+              name: "myname",
+              value: '"rakeshchodotcom"',
+              type: "primitive",
+              address: "0x001",
+            },
+            {
+              name: "anotherName",
+              value: '"david"',
+              type: "primitive",
+              address: "0x002",
+            },
+            {
+              name: "userOne",
+              value: "→ 0xABC123",
+              type: "reference",
+              address: "0x003",
+            },
+            {
+              name: "userTwo",
+              value: "→ 0xABC123",
+              type: "reference",
+              address: "0x004",
+              highlight: true,
+            },
+          ],
+          heap: [
+            {
+              address: "0xABC123",
+              content: '{ email: "user@google.com", upi: "user@upi" }',
+              properties: [
+                { key: "email", value: '"user@google.com"' },
+                { key: "upi", value: '"user@upi"' },
+              ],
+              connections: 2,
+            },
+          ],
+          explanation: `
+                    <h3>⚡ The Shocking Twist!</h3>
+                    <p><strong>What JavaScript copied:</strong> Not the object, but the REFERENCE! Both variables now point to the same object.</p>
+                    <p><strong>Critical Insight:</strong> There's still only ONE object in Heap, but TWO references pointing to it!</p>
+                    <div style="background: rgba(255, 217, 61, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px;">
+                        <strong>🎯 Corporate Dev Reality:</strong> This is where 90% of bugs come from! Two variables, one object.
+                    </div>
+                `,
+          question:
+            "Do you understand why both variables point to the same object?",
+        },
+        {
+          title: "🎬 Scene 6: The Mutation (Your Original Question!)",
+          code: 'userTwo.email = "aurbhai@google.com";',
+          stack: [
+            {
+              name: "myname",
+              value: '"rakeshchodotcom"',
+              type: "primitive",
+              address: "0x001",
+            },
+            {
+              name: "anotherName",
+              value: '"david"',
+              type: "primitive",
+              address: "0x002",
+            },
+            {
+              name: "userOne",
+              value: "→ 0xABC123",
+              type: "reference",
+              address: "0x003",
+            },
+            {
+              name: "userTwo",
+              value: "→ 0xABC123",
+              type: "reference",
+              address: "0x004",
+            },
+          ],
+          heap: [
+            {
+              address: "0xABC123",
+              content: '{ email: "aurbhai@google.com", upi: "user@upi" }',
+              properties: [
+                { key: "email", value: '"aurbhai@google.com"', changed: true },
+                { key: "upi", value: '"user@upi"' },
+              ],
+              mutated: true,
+            },
+          ],
+          explanation: `
+                    <h3>🎯 MYSTERY SOLVED!</h3>
+                    <p><strong>Why lines 58-59 show same output:</strong> Both userOne and userTwo reference the SAME object in Heap!</p>
+                    <p><strong>When you change userTwo.email:</strong> You're modifying the shared object that both variables point to.</p>
+                    <div style="background: rgba(255, 107, 107, 0.15); padding: 15px; border-radius: 8px; margin-top: 15px; border: 2px solid #ff6b6b;">
+                        <strong>⚠️ THE REVELATION:</strong><br>
+                        console.log(userOne.email); // "aurbhai@google.com"<br>
+                        console.log(userTwo.email); // "aurbhai@google.com"<br>
+                        <em>Both show the same because they're looking at the same object!</em>
+                    </div>
+                `,
+          question:
+            "Now do you understand why both variables show the same email after the change?",
+        },
+      ];
+
+      const helpExplanations = {
+        stack: {
+          title: "📚 Stack Memory - Simple Explanation",
+          content: `
+                    <h4>Think of Stack like your pocket:</h4>
+                    <p>• Small, fast access</p>
+                    <p>• You put actual items (primitive values) directly in it</p>
+                    <p>• Limited space, but super quick to access</p>
+                    <p>• When you copy something from your pocket to someone else's pocket, they get their own copy</p>
+                    <br>
+                    <strong>🔤 Primitives that live here:</strong> numbers, strings, booleans, null, undefined
+                `,
+        },
+        heap: {
+          title: "🏗️ Heap Memory - Simple Explanation",
+          content: `
+                    <h4>Think of Heap like a warehouse:</h4>
+                    <p>• Big storage space for large items (objects)</p>
+                    <p>• You don't carry the actual item, just the address (reference)</p>
+                    <p>• Multiple people can have the same address and visit the same storage unit</p>
+                    <p>• When someone changes something in the storage unit, everyone with that address sees the change</p>
+                    <br>
+                    <strong>🏠 Objects that live here:</strong> arrays, objects, functions
+                `,
+        },
+        primitive: {
+          title: "🔤 Primitive Types - Simple Explanation",
+          content: `
+                    <h4>Primitives are like coins in your wallet:</h4>
+                    <p>• <strong>Simple values:</strong> numbers, strings, booleans</p>
+                    <p>• <strong>Immutable:</strong> You can't change a number 5 to become 6, you replace it</p>
+                    <p>• <strong>Direct storage:</strong> The variable contains the actual value</p>
+                    <p>• <strong>Independent copies:</strong> Like giving someone a photocopy</p>
+                    <br>
+                    <div style="background: rgba(255, 107, 107, 0.1); padding: 10px; border-radius: 5px;">
+                        <code>let x = 5; let y = x;</code> → y gets its own copy of 5
+                    </div>
+                `,
+        },
+        reference: {
+          title: "🔗 Reference Types - Simple Explanation",
+          content: `
+                    <h4>References are like house addresses:</h4>
+                    <p>• <strong>Complex values:</strong> objects, arrays, functions</p>
+                    <p>• <strong>Address-based:</strong> Variable holds the address, not the actual object</p>
+                    <p>• <strong>Shared access:</strong> Multiple variables can point to same object</p>
+                    <p>• <strong>Mutable:</strong> You can change the object's contents</p>
+                    <br>
+                    <div style="background: rgba(78, 205, 196, 0.1); padding: 10px; border-radius: 5px;">
+                        <code>let obj1 = {}; let obj2 = obj1;</code> → Both point to same object
+                    </div>
+                `,
+        },
+        copy: {
+          title: "📋 Copy Behavior - Simple Explanation",
+          content: `
+                    <h4>Two different copy methods:</h4>
+                    <p><strong>📋 Primitive Copy:</strong></p>
+                    <p>• Copies the actual value</p>
+                    <p>• Creates independent variables</p>
+                    <p>• Like photocopying a page</p>
+                    <br>
+                    <p><strong>🔗 Reference Copy:</strong></p>
+                    <p>• Copies the address/reference</p>
+                    <p>• Both variables access same object</p>
+                    <p>• Like giving someone your home address</p>
+                    <br>
+                    <div style="background: rgba(255, 217, 61, 0.1); padding: 10px; border-radius: 5px;">
+                        This is why your userOne and userTwo both changed!
+                    </div>
+                `,
+        },
+        address: {
+          title: "📍 Memory Addresses - Simple Explanation",
+          content: `
+                    <h4>Memory addresses are like house numbers:</h4>
+                    <p>• <strong>Unique identifier:</strong> Every memory location has an address</p>
+                    <p>• <strong>For primitives:</strong> Address points directly to the value</p>
+                    <p>• <strong>For objects:</strong> Address in Stack points to object in Heap</p>
+                    <p>• <strong>Hexadecimal format:</strong> Like 0x001, 0xABC123 (computer-friendly)</p>
+                    <br>
+                    <div style="background: rgba(69, 183, 209, 0.1); padding: 10px; border-radius: 5px;">
+                        Think: Your variable name is like a person's name, the address is where they actually live!
+                    </div>
+                `,
+        },
+      };
+
+      function startTutorial() {
+        currentScene = 0;
+        showScene(0);
+      }
+
+      function showScene(sceneIndex) {
+        if (sceneIndex >= scenes.length) {
+          showCompletion();
+          return;
+        }
+
+        const scene = scenes[sceneIndex];
+
+        // Update progress
+        const progress = ((sceneIndex + 1) / scenes.length) * 100;
+        document.getElementById("progress").style.width = progress + "%";
+        document.getElementById("scene-counter").textContent = `Scene ${
+          sceneIndex + 1
+        } of ${scenes.length}`;
+
+        // Clear previous content
+        document.getElementById("stack-content").innerHTML = "";
+        document.getElementById("heap-content").innerHTML = "";
+
+        // Render stack variables with animation
+        scene.stack.forEach((variable, index) => {
+          setTimeout(() => {
+            const box = createVariableBox(variable);
+            document.getElementById("stack-content").appendChild(box);
+            setTimeout(() => box.classList.add("show"), 100);
+          }, index * 500);
+        });
+
+        // Render heap objects with animation
+        scene.heap.forEach((obj, index) => {
+          setTimeout(() => {
+            const box = createHeapObject(obj);
+            document.getElementById("heap-content").appendChild(box);
+            setTimeout(() => box.classList.add("show"), 100);
+          }, index * 500);
+        });
+
+        // Show scene content
+        setTimeout(() => {
+          document.getElementById("content-area").innerHTML = `
+                    <div class="movie-frame">
+                        <div class="scene-title">${scene.title}</div>
+                        <div class="code-line">${scene.code}</div>
+                        <div class="explanation">${scene.explanation}</div>
+                        
+                        <div class="tutor-controls">
+                            <div class="question">🤔 ${scene.question}</div>
+                            <button class="btn btn-yes" onclick="handleYes()">✅ Yes, I understand!</button>
+                            <button class="btn btn-no" onclick="handleNo()">❌ No, explain more</button>
+                        </div>
+                    </div>
+                `;
+          isWaitingForResponse = true;
+        }, 1000);
+      }
+
+      function createVariableBox(variable) {
+        const box = document.createElement("div");
+        box.className = `variable-box ${variable.type}`;
+
+        let content = `
+                <div class="var-name">${variable.name}</div>
+                <div class="var-value">${variable.value}</div>
+                <div class="memory-address">📍 ${variable.address}</div>
+            `;
+
+        if (variable.highlight) {
+          box.style.boxShadow = "0 0 20px rgba(255, 217, 61, 0.6)";
+          box.style.transform = "scale(1.02)";
+        }
+
+        if (variable.changed) {
+          box.style.animation = "code-highlight 1s ease-in-out";
+          box.style.border = "2px solid #ffd93d";
+        }
+
+        box.innerHTML = content;
+        return box;
+      }
+
+      function createHeapObject(obj) {
+        const box = document.createElement("div");
+        box.className = "variable-box reference";
+
+        let propertiesHtml = obj.properties
+          .map(
+            (prop) =>
+              `<div style="margin: 8px 0; ${
+                prop.changed
+                  ? "color: #ffd93d; font-weight: bold; animation: code-highlight 1s ease-in-out;"
+                  : ""
+              }">
+                    <strong>${prop.key}:</strong> ${prop.value}
+                </div>`
+          )
+          .join("");
+
+        let connectionsInfo = "";
+        if (obj.connections) {
+          connectionsInfo = `<div style="color: #4ecdc4; font-size: 0.9rem; margin-top: 10px;">
+                    🔗 ${obj.connections} variables pointing here
+                </div>`;
+        }
+
+        box.innerHTML = `
+                <div class="var-name">🏠 Object at ${obj.address}</div>
+                <div class="object-detail">
+                    ${propertiesHtml}
+                    ${connectionsInfo}
+                </div>
+            `;
+
+        if (obj.highlight) {
+          box.style.boxShadow = "0 0 20px rgba(78, 205, 196, 0.6)";
+          box.style.transform = "scale(1.02)";
+        }
+
+        if (obj.mutated) {
+          box.style.animation = "warning-pulse 2s infinite";
+          box.style.border = "2px solid #ff6b6b";
+        }
+
+        return box;
+      }
+
+      function handleYes() {
+        if (!isWaitingForResponse) return;
+
+        currentScene++;
+        isWaitingForResponse = false;
+        document.getElementById("help-section").style.display = "none";
+
+        if (currentScene < scenes.length) {
+          showScene(currentScene);
+        } else {
+          showCompletion();
+        }
+      }
+
+      function handleNo() {
+        if (!isWaitingForResponse) return;
+
+        document.getElementById("help-section").style.display = "block";
+        document
+          .getElementById("help-section")
+          .scrollIntoView({ behavior: "smooth" });
+      }
+
+      function explainConcept(concept) {
+        const explanation = helpExplanations[concept];
+        const explanationDiv = document.getElementById("simple-explanation");
+
+        explanationDiv.innerHTML = `
+                <div class="help-title">${explanation.title}</div>
+                <div>${explanation.content}</div>
+            `;
+        explanationDiv.style.display = "block";
+        explanationDiv.scrollIntoView({ behavior: "smooth" });
+      }
+
+      function continueAfterHelp() {
+        document.getElementById("help-section").style.display = "none";
+        handleYes();
+      }
+
+      function showCompletion() {
+        document.getElementById("content-area").innerHTML = `
+                <div class="movie-frame">
+                    <div class="scene-title">🎉 Congratulations! You've Mastered JavaScript Memory!</div>
+                    
+                    <div class="explanation">
+                        <h3>🏆 What You Just Learned:</h3>
+                        <p><strong>1. Stack vs Heap:</strong> Primitives in Stack, Objects in Heap</p>
+                        <p><strong>2. Copy Behavior:</strong> Primitives copy values, Objects copy references</p>
+                        <p><strong>3. Your Original Question:</strong> Both userOne and userTwo showed same email because they reference the same object!</p>
+                    </div>
+
+                    <div style="background: rgba(78, 205, 196, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h3>🚀 Pro Developer Solutions:</h3>
+                        <div class="code-line">// Shallow copy: let userTwo = {...userOne};</div>
+                        <div class="code-line">// Deep copy: let userTwo = structuredClone(userOne);</div>
+                        <div class="code-line">// Object.assign: let userTwo = Object.assign({}, userOne);</div>
+                    </div>
+
+                    <div class="tutor-controls">
+                        <button class="btn btn-start" onclick="startTutorial()">🔄 Watch Again</button>
+                        <div style="margin-top: 15px; color: #a0a0a0;">
+                            You're now ready to avoid the #1 JavaScript gotcha in production! 🎯
+                        </div>
+                    </div>
+                </div>
+            `;
+      }
+
+      // Initialize with welcome message
+      document.getElementById("content-area").innerHTML = `
+            <div class="tutor-controls">
+                <div class="question">🚀 Ready to understand JavaScript memory like a pro developer?</div>
+                <button class="btn btn-start" onclick="startTutorial()">Start Learning Journey</button>
+                <div style="margin-top: 15px; font-size: 0.9rem; color: #a0a0a0;">
+                    ✨ Interactive • Step-by-step • Ask questions anytime
+                </div>
+            </div>
+        `;
+    </script>
+  </body>
+</html>
