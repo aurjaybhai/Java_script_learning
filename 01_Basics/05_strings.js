@@ -19,7 +19,7 @@ console.log(gameName.indexOf("B")); // It gets the '5'
 const newString = gameName.substring(0, 4); // Method #1 **In substring you cannot put negtive values as it does not obey it
 console.log(newString);
 
-const anotherString = gameName.slice(-8, 4); // Method #2
+const anotherString = gameName.slice(-8, 4); // Method #2(explained in the excali and slicing html file)
 console.log(anotherString);
 
 const newStringOne = " rakesh";

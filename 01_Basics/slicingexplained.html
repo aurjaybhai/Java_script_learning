@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript slice() Method Explained</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      body {
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        color: #333;
+        padding: 20px;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+      header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      h1 {
+        color: #2575fc;
+        margin-bottom: 10px;
+      }
+      .subtitle {
+        color: #6a11cb;
+        font-size: 1.2em;
+        margin-bottom: 20px;
+      }
+      .explanation {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        border-left: 5px solid #6a11cb;
+      }
+      .code-block {
+        background: #272822;
+        color: #f8f8f2;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        overflow-x: auto;
+        font-family: "Fira Code", monospace;
+      }
+      .visualization {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 30px 0;
+      }
+      .string-box {
+        width: 100%;
+        padding: 15px;
+        background: #6a11cb;
+        color: white;
+        border-radius: 8px;
+        text-align: center;
+        margin: 10px 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+      .character {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        margin: 5px;
+        background: #2575fc;
+        border-radius: 5px;
+        position: relative;
+      }
+      .index {
+        position: absolute;
+        top: -20px;
+        left: 0;
+        right: 0;
+        font-size: 12px;
+        color: #ffeb3b;
+      }
+      .negative-index {
+        position: absolute;
+        bottom: -20px;
+        left: 0;
+        right: 0;
+        font-size: 12px;
+        color: #ff6b6b;
+      }
+      .slice-range {
+        background: #ffeb3b;
+        color: #333;
+        border-radius: 5px;
+        padding: 5px;
+        margin-top: 15px;
+      }
+      .try-it {
+        background: #ffeb3b;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+      .try-it h3 {
+        color: #333;
+        margin-bottom: 15px;
+      }
+      .try-it input {
+        padding: 10px;
+        border: 2px solid #6a11cb;
+        border-radius: 5px;
+        width: 100%;
+        margin-bottom: 15px;
+      }
+      .try-it button {
+        background: #6a11cb;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+        transition: background 0.3s;
+      }
+      .try-it button:hover {
+        background: #2575fc;
+      }
+      .output {
+        background: #272822;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 15px;
+        min-height: 100px;
+      }
+      .key-points {
+        background: #e8f4fd;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+      .key-points h3 {
+        color: #2575fc;
+        margin-bottom: 15px;
+      }
+      .key-points ul {
+        margin-left: 20px;
+      }
+      .key-points li {
+        margin-bottom: 10px;
+      }
+      footer {
+        text-align: center;
+        margin-top: 30px;
+        color: #6a11cb;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>JavaScript slice() Method Explained</h1>
+        <p class="subtitle">Understanding negative indices in slice()</p>
+      </header>
+
+      <div class="explanation">
+        <h2>What is the slice() method?</h2>
+        <p>
+          The <code>slice()</code> method extracts a section of a string and
+          returns it as a new string.
+        </p>
+        <p>
+          It takes two parameters: <code>start</code> and <code>end</code> (end
+          is not included in the result).
+        </p>
+        <p>Negative indices count backwards from the end of the string.</p>
+      </div>
+
+      <div class="code-block">
+        // In your code: const gameName = "chessBaseIndia"; // 14 characters
+        const anotherString = gameName.slice(-8, 4); console.log(anotherString);
+        // What will this output?
+      </div>
+
+      <div class="visualization">
+        <h3>Visualizing the String</h3>
+        <div class="string-box">
+          <div class="character"><span class="index">0</span>c</div>
+          <div class="character"><span class="index">1</span>h</div>
+          <div class="character"><span class="index">2</span>e</div>
+          <div class="character"><span class="index">3</span>s</div>
+          <div class="character"><span class="index">4</span>s</div>
+          <div class="character"><span class="index">5</span>B</div>
+          <div class="character"><span class="index">6</span>a</div>
+          <div class="character"><span class="index">7</span>s</div>
+          <div class="character"><span class="index">8</span>e</div>
+          <div class="character"><span class="index">9</span>I</div>
+          <div class="character"><span class="index">10</span>n</div>
+          <div class="character"><span class="index">11</span>d</div>
+          <div class="character"><span class="index">12</span>i</div>
+          <div class="character"><span class="index">13</span>a</div>
+        </div>
+
+        <div class="string-box">
+          <div class="character"><span class="negative-index">-14</span>c</div>
+          <div class="character"><span class="negative-index">-13</span>h</div>
+          <div class="character"><span class="negative-index">-12</span>e</div>
+          <div class="character"><span class="negative-index">-11</span>s</div>
+          <div class="character"><span class="negative-index">-10</span>s</div>
+          <div class="character"><span class="negative-index">-9</span>B</div>
+          <div class="character"><span class="negative-index">-8</span>a</div>
+          <div class="character"><span class="negative-index">-7</span>s</div>
+          <div class="character"><span class="negative-index">-6</span>e</div>
+          <div class="character"><span class="negative-index">-5</span>I</div>
+          <div class="character"><span class="negative-index">-4</span>n</div>
+          <div class="character"><span class="negative-index">-3</span>d</div>
+          <div class="character"><span class="negative-index">-2</span>i</div>
+          <div class="character"><span class="negative-index">-1</span>a</div>
+        </div>
+
+        <div class="slice-range">
+          <p>
+            slice(-8, 4) means: start from index -8 (which is position 6) and
+            end at index 4
+          </p>
+          <p>But since 6 > 4, this returns an empty string!</p>
+        </div>
+      </div>
+
+      <div class="try-it">
+        <h3>Try It Yourself</h3>
+        <p>Enter a string and try different slice parameters:</p>
+        <input type="text" id="inputString" value="chessBaseIndia" />
+        <div>
+          <label>Start: </label>
+          <input type="number" id="startIndex" value="-8" style="width: 80px" />
+          <label>End: </label>
+          <input type="number" id="endIndex" value="4" style="width: 80px" />
+        </div>
+        <button onclick="sliceString()">Slice It!</button>
+        <div class="output" id="output">Output will appear here...</div>
+      </div>
+
+      <div class="key-points">
+        <h3>Key Points About slice()</h3>
+        <ul>
+          <li>
+            <code>slice()</code> extracts a section of a string and returns a
+            new string
+          </li>
+          <li>Negative indices count backwards from the end of the string</li>
+          <li>
+            <code>slice(-n)</code> means "start from the nth character from the
+            end"
+          </li>
+          <li>
+            If start index is greater than end index, slice() returns an empty
+            string
+          </li>
+          <li>
+            Unlike <code>substring()</code>, <code>slice()</code> accepts
+            negative indices
+          </li>
+        </ul>
+      </div>
+
+      <div class="code-block">
+        // More examples: const str = "javascript"; console.log(str.slice(0,
+        4)); // "java" console.log(str.slice(4)); // "script"
+        console.log(str.slice(-6)); // "script" (from index 5)
+        console.log(str.slice(-6, 10)); // "script" console.log(str.slice(2,
+        -3)); // "vasc" (from index 2 to index 7) console.log(str.slice(-3,
+        -1)); // "pt" (from index 7 to index 9)
+      </div>
+
+      <footer>
+        <p>
+          Understanding slice() with negative indices is useful for string
+          manipulation!
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      function sliceString() {
+        const inputString = document.getElementById("inputString").value;
+        const startIndex = parseInt(
+          document.getElementById("startIndex").value
+        );
+        const endIndex = parseInt(document.getElementById("endIndex").value);
+        const output = document.getElementById("output");
+
+        const result = inputString.slice(startIndex, endIndex);
+
+        output.innerHTML = `
+                <p>Original string: "${inputString}" (length: ${
+          inputString.length
+        })</p>
+                <p>slice(${startIndex}, ${endIndex}) = "${result}"</p>
+                <p>Explanation: </p>
+                <ul>
+                    <li>Start index: ${startIndex} ${
+          startIndex < 0
+            ? `(which is position ${
+                inputString.length + startIndex
+              } from the start)`
+            : ""
+        }</li>
+                    <li>End index: ${endIndex} ${
+          endIndex < 0
+            ? `(which is position ${
+                inputString.length + endIndex
+              } from the start)`
+            : ""
+        }</li>
+                    <li>Result length: ${result.length}</li>
+                </ul>
+            `;
+      }
+
+      // Initialize the demo
+      document.addEventListener("DOMContentLoaded", function () {
+        sliceString();
+      });
+    </script>
+  </body>
+</html>
