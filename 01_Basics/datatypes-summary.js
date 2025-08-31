@@ -57,3 +57,6 @@ userTwo.email = "aurbhai@google.com";
 
 console.log(userOne.email); // aurbhai@google.com
 console.log(userTwo.email); // aurbhai@google.com
+
+/*Checkout the stack vs heap (memory) html file in which the concept is explained
+where easily in simple language*/
