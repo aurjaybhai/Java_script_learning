@@ -5,7 +5,7 @@ const repoCount = 52;
 
 console.log(`Hello my name is ${name} and my repo count is ${repoCount}`); // # Method #2
 
-const gameName = new String("chessBaseIndia"); // object
+const gameName = new String("chess-Base-India"); // object
 console.log(gameName[0]); // It prints the output as "c"
 
 console.log(gameName.__proto__); // collection of properties(like toolbox) like Uppercase
@@ -31,9 +31,10 @@ const url = "https://hitesh.com/hitesh%20choudhary";
 
 console.log(url.replace("%20", "-"));
 
-console.log(url.includes("hitesh"));
+console.log(url.includes("hitesh")); // returns true if hitesh exist in url
 
-console.log(gameName.split("-"));
+console.log(gameName.split("-")); //  looks for the "-" in the chessbaseindia word and splits the word
+// according to that
 
 // console.log(gameName.__proto__);
 // console.log(gameName.toUpperCase);
