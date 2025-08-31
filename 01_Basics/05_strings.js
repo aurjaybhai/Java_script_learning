@@ -36,6 +36,11 @@ console.log(url.includes("hitesh")); // returns true if hitesh exist in url
 console.log(gameName.split("-")); //  looks for the "-" in the chessbaseindia word and splits the word
 // according to that
 
+
+
+
+
+
 // console.log(gameName.__proto__);
 // console.log(gameName.toUpperCase);
 
