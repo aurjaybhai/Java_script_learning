@@ -19,9 +19,13 @@ console.log(JsUser.email); // # Method 1
 // console.log(JsUser[email]); // incorrect way to access the email property of JsUser object
 console.log(JsUser["email"]); // # Method 2
 
-console.log(JsUser["full name"]);
+console.log(JsUser["full name"]); // like this type of you can access with them with only Method#2
 
 console.log(typeof JsUser[mySym]);
+// This checks the type of the VALUE stored at the Symbol key, not the Symbol itself
+// Since you assigned the string "mykey1" to this Symbol key, it returns "string"
+// If you had assigned a number like 42, it would return "number"
+// If you had assigned an object, it would return "object", etc.
 
 JsUser.email = "rakesh@anthropic.com";
 // Object.freeze(JsUser); // telling javascript to make no changes in "JsUser"
@@ -40,4 +44,3 @@ JsUser.greetingTwo = function () {
 };
 
 console.log(JsUser.greetingTwo());
-
