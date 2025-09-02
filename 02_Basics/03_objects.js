@@ -37,6 +37,10 @@ JsUser.greeting = function () {
 };
 
 console.log(JsUser.greeting()); // this returns the "undefined bcoz function does not return anything"
+// const func = function() {
+//   console.log("Hello from function (with return)"); // return should be there
+//   return "Greeting successful!";
+// };
 console.log(JsUser.greeting); // REFERENCES the function ... Just shows what the function looks like
 
 JsUser.greetingTwo = function () {
