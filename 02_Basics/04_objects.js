@@ -1,6 +1,6 @@
 // const tinderUser = new Object(); // singleton object
 
-const tinderUser = {}; // non singleton object
+const tinderUser = {}; // non singleton object most developers use this bcoz it's shorter
 
 tinderUser.id = "124abcv";
 tinderUser.name = "Sam";
@@ -69,8 +69,8 @@ const course = {
 const { courseInstructor } = course; // ##METHOD 1// if you think it's name is too long then you can you do below method also
 
 const { courseInstructor: instructor } = course; // ##METHOD 2
-console.log(courseInstructor); // # METHOD 1 OUTPUT
-console.log(instructor); // # METHOD 2 OUTPUT
+console.log("Method 1: ", courseInstructor); // # METHOD 1 OUTPUT
+console.log("Method 2: ", instructor); // # METHOD 2 OUTPUT
 
 // {
 //   "name" : "rakesh",
@@ -79,4 +79,3 @@ console.log(instructor); // # METHOD 2 OUTPUT
 // }
 
 // [{}, {}, {}];
-
