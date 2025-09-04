@@ -15,4 +15,7 @@ function addTwoNumbers(number1, number2) {
   console.log(number1 + number2);
 }
 
-addTwoNumbers(3, 5); // jab aap funtion ko call karte samay bule rahe ho tab ushe "ARGUMENTS"
+// addTwoNumbers(3, 5); // jab aap funtion ko call karte samay bule rahe ho tab ushe "ARGUMENTS"
+const result = addTwoNumbers(3, 5);
+
+console.log("Result :", result);
