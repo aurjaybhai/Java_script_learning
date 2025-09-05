@@ -37,3 +37,21 @@ function loginUserMessage(username = "sam") {
 
 console.log(loginUserMessage("rakesh"));
 // console.log(loginUserMessage()); // It will print undefined
+// rest operator and spread operator // ...num1 both are same
+
+function calculateCartPrice(...num1) {
+  return num1;
+}
+
+console.log(calculateCartPrice(200, 400, 555, 777, 343));
+
+function calculateCarttPRICE(val1, val2, val3, ...num1) {
+  return num1;
+}
+
+console.log(alculateCarttPRICE(200, 400, 555, 777, 343)); //see this output to clear your concepts and revision
+
+const user = {
+  username: "rakesh",
+  price: 200,
+};
