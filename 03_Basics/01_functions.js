@@ -49,9 +49,30 @@ function calculateCarttPRICE(val1, val2, val3, ...num1) {
   return num1;
 }
 
-console.log(alculateCarttPRICE(200, 400, 555, 777, 343)); //see this output to clear your concepts and revision
+console.log(calculateCarttPRICE(200, 400, 555, 777, 343)); //see this output to clear your concepts and revision
 
 const user = {
   username: "rakesh",
   price: 200,
 };
+
+function handleObject(anyObject) {
+  console.log(
+    `Username is ${anyObject.username} and price is ${anyObject.price}`
+  );
+}
+
+// handleObject(user);
+
+handleObject({
+  username: "sam",
+  price: 399,
+});
+
+const myNewArray = [200, 300, 400, 700];
+
+function returnSecondValue(getArray) {
+  return getArray[1];
+}
+
+console.log(returnSecondValue(myNewArray));
