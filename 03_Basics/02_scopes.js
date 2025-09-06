@@ -36,7 +36,7 @@ one();
 if (true) {
   const username = "rakesh";
   if (username === "rakesh") {
-    const website = "youtube";
+    const website = " youtube";
     console.log(username + website);
   }
   // console.log(website);
