@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Execution Context Visualization</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+        color: #333;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        text-align: center;
+        color: white;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      .main-content {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .code-section {
+        background: #2d3748;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .code-container {
+        background: #1a202c;
+        padding: 15px;
+        border-radius: 10px;
+        overflow-x: auto;
+      }
+
+      .code-line {
+        color: #e2e8f0;
+        font-family: "Consolas", "Monaco", monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        padding: 3px 10px;
+        margin: 2px 0;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .code-line.active {
+        background: rgba(72, 187, 120, 0.3);
+        box-shadow: 0 0 20px rgba(72, 187, 120, 0.5);
+        transform: translateX(5px);
+      }
+
+      .code-line.executed {
+        opacity: 0.6;
+      }
+
+      .execution-contexts {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        position: relative;
+        min-height: 500px;
+      }
+
+      .context-stack {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 15px;
+        min-height: 400px;
+        padding: 10px;
+        background: #f7fafc;
+        border-radius: 10px;
+        border: 2px dashed #cbd5e0;
+      }
+
+      .execution-context {
+        background: white;
+        border: 2px solid #667eea;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        animation: slideIn 0.5s ease-out;
+        transition: all 0.3s ease;
+      }
+
+      .execution-context.removing {
+        animation: slideOut 0.5s ease-out;
+        opacity: 0;
+        transform: translateX(100%);
+      }
+
+      .context-header {
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .context-badge {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.8em;
+      }
+
+      .phase-indicator {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        font-weight: bold;
+        margin-bottom: 10px;
+        animation: pulse 1s infinite;
+      }
+
+      .phase-memory {
+        background: #fbbf24;
+        color: #78350f;
+      }
+
+      .phase-execution {
+        background: #34d399;
+        color: #064e3b;
+      }
+
+      .variables {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .variable {
+        background: #f3f4f6;
+        padding: 8px;
+        border-radius: 6px;
+        border-left: 3px solid #667eea;
+        font-family: monospace;
+        font-size: 0.9em;
+        transition: all 0.3s ease;
+      }
+
+      .variable.new {
+        animation: highlight 0.5s ease;
+        background: #fef3c7;
+      }
+
+      .variable.updated {
+        animation: update 0.5s ease;
+        background: #d1fae5;
+      }
+
+      .controls {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 30px;
+        font-size: 1em;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-secondary {
+        background: #e2e8f0;
+        color: #475569;
+      }
+
+      .btn-secondary:hover {
+        background: #cbd5e0;
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+      }
+
+      .explanation {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin-top: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        min-height: 100px;
+        border-left: 4px solid #667eea;
+      }
+
+      .explanation h3 {
+        color: #667eea;
+        margin-bottom: 10px;
+      }
+
+      .explanation p {
+        line-height: 1.6;
+        color: #4a5568;
+      }
+
+      .call-stack-label {
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        background: white;
+        padding: 0 10px;
+        color: #667eea;
+        font-weight: bold;
+        font-size: 0.9em;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+
+      @keyframes highlight {
+        0% {
+          background: #fef3c7;
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          background: #f3f4f6;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes update {
+        0% {
+          background: #d1fae5;
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          background: #f3f4f6;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .legend {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9em;
+      }
+
+      .legend-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🚀 JavaScript Execution Context Visualizer</h1>
+
+      <div class="main-content">
+        <div class="code-section">
+          <h2 style="color: white; margin-bottom: 15px">📝 Your Code</h2>
+          <div class="code-container">
+            <div class="code-line" data-line="1">let val1 = 10</div>
+            <div class="code-line" data-line="2">let val2 = 5</div>
+            <div class="code-line" data-line="3">
+              function addNum(num1, num2){
+            </div>
+            <div class="code-line" data-line="4">let total = num1 + num2</div>
+            <div class="code-line" data-line="5">return total</div>
+            <div class="code-line" data-line="6">}</div>
+            <div class="code-line" data-line="7">
+              let result1 = addNum(val1, val2)
+            </div>
+            <div class="code-line" data-line="8">
+              let result2 = addNum(10, 2)
+            </div>
+          </div>
+        </div>
+
+        <div class="execution-contexts">
+          <span class="call-stack-label">CALL STACK</span>
+          <h2 style="margin-bottom: 15px">📚 Execution Contexts</h2>
+          <div class="context-stack" id="contextStack">
+            <!-- Contexts will be added here dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-secondary" onclick="reset()">↺ Reset</button>
+        <button class="btn btn-primary" onclick="nextStep()" id="nextBtn">
+          Next Step →
+        </button>
+        <button class="btn btn-secondary" onclick="autoPlay()" id="autoBtn">
+          ▶ Auto Play
+        </button>
+      </div>
+
+      <div class="explanation" id="explanation">
+        <h3>Welcome to the Execution Context Visualizer!</h3>
+        <p>
+          Click "Next Step" to see how JavaScript executes your code. Watch how
+          execution contexts are created, variables are hoisted, and functions
+          are called!
+        </p>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color" style="background: #fbbf24"></div>
+          <span>Memory Creation Phase</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: #34d399"></div>
+          <span>Execution Phase</span>
+        </div>
+        <div class="legend-item">
+          <div
+            class="legend-color"
+            style="background: rgba(72, 187, 120, 0.3)"
+          ></div>
+          <span>Currently Executing</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentStep = 0;
+      let autoPlayInterval = null;
+      let contexts = [];
+
+      const steps = [
+        {
+          action: "create-global",
+          phase: "memory",
+          explanation:
+            "🌍 <strong>Global Execution Context Created!</strong><br>First, JavaScript creates the Global Execution Context. In the Memory Creation Phase, it scans the entire code and allocates memory for all variables and functions.",
+          variables: {
+            val1: "undefined",
+            val2: "undefined",
+            addNum: "fn {...}",
+            result1: "undefined",
+            result2: "undefined",
+          },
+        },
+        {
+          action: "execute-global",
+          phase: "execution",
+          line: 1,
+          explanation:
+            "⚡ <strong>Execution Phase Begins!</strong><br>Now JavaScript starts executing the code line by line. First line: <code>let val1 = 10</code> - Assigns 10 to val1.",
+          update: { val1: "10" },
+        },
+        {
+          line: 2,
+          explanation:
+            "📝 Executing: <code>let val2 = 5</code><br>Assigns 5 to val2 in the Global Execution Context.",
+          update: { val2: "5" },
+        },
+        {
+          line: 3,
+          explanation:
+            "⏭️ Function declaration already processed during memory phase.<br>JavaScript moves to the next executable line.",
+        },
+        {
+          line: 7,
+          action: "create-function",
+          explanation:
+            "📞 <strong>Function Call: addNum(val1, val2)</strong><br>A new Function Execution Context is created and pushed onto the call stack!",
+          functionContext: {
+            name: "addNum(10, 5)",
+            phase: "memory",
+            variables: {
+              num1: "undefined",
+              num2: "undefined",
+              total: "undefined",
+            },
+          },
+        },
+        {
+          line: 7,
+          action: "function-execution",
+          explanation:
+            "🔄 <strong>Function Parameters Initialized</strong><br>In the execution phase, parameters get their values: num1 = 10, num2 = 5",
+          functionUpdate: {
+            num1: "10",
+            num2: "5",
+          },
+        },
+        {
+          line: 4,
+          explanation:
+            "➕ Inside function: <code>let total = num1 + num2</code><br>Calculates 10 + 5 = 15 and stores in total.",
+          functionUpdate: {
+            total: "15",
+          },
+        },
+        {
+          line: 5,
+          action: "return",
+          explanation:
+            "↩️ <strong>Return Statement</strong><br>Function returns 15. The Function Execution Context will be removed from the call stack.",
+        },
+        {
+          line: 7,
+          action: "pop-function",
+          explanation:
+            "📤 <strong>Function Context Popped!</strong><br>Function execution complete. Context removed from stack. Value 15 is assigned to result1.",
+          update: { result1: "15" },
+        },
+        {
+          line: 8,
+          action: "create-function",
+          explanation:
+            "📞 <strong>Second Function Call: addNum(10, 2)</strong><br>Another new Function Execution Context is created!",
+          functionContext: {
+            name: "addNum(10, 2)",
+            phase: "memory",
+            variables: {
+              num1: "undefined",
+              num2: "undefined",
+              total: "undefined",
+            },
+          },
+        },
+        {
+          line: 8,
+          action: "function-execution",
+          explanation:
+            "🔄 <strong>Parameters Initialized</strong><br>num1 = 10, num2 = 2",
+          functionUpdate: {
+            num1: "10",
+            num2: "2",
+          },
+        },
+        {
+          line: 4,
+          explanation:
+            "➕ Inside function: <code>let total = num1 + num2</code><br>Calculates 10 + 2 = 12",
+          functionUpdate: {
+            total: "12",
+          },
+        },
+        {
+          line: 5,
+          action: "return",
+          explanation:
+            "↩️ <strong>Return Statement</strong><br>Function returns 12.",
+        },
+        {
+          line: 8,
+          action: "pop-function",
+          explanation:
+            "📤 <strong>Function Context Popped!</strong><br>Function complete. Value 12 is assigned to result2.",
+          update: { result2: "12" },
+        },
+        {
+          action: "complete",
+          explanation:
+            "✅ <strong>Execution Complete!</strong><br>All code has been executed. The Global Execution Context remains until the program ends. Final values: val1=10, val2=5, result1=15, result2=12",
+        },
+      ];
+
+      function createContextElement(type, name, phase, variables) {
+        const div = document.createElement("div");
+        div.className = "execution-context";
+        div.innerHTML = `
+                <div class="context-header">
+                    <span>${name}</span>
+                    <span class="context-badge">${type}</span>
+                </div>
+                <div class="phase-indicator phase-${phase}">${
+          phase === "memory" ? "📦 Memory Phase" : "⚡ Execution Phase"
+        }</div>
+                <div class="variables">
+                    ${Object.entries(variables)
+                      .map(
+                        ([key, value]) =>
+                          `<div class="variable" data-var="${key}">${key}: ${value}</div>`
+                      )
+                      .join("")}
+                </div>
+            `;
+        return div;
+      }
+
+      function updateVariables(contextIndex, updates, isNew = false) {
+        const context =
+          document.querySelectorAll(".execution-context")[contextIndex];
+        if (!context) return;
+
+        Object.entries(updates).forEach(([key, value]) => {
+          const varElement = context.querySelector(`[data-var="${key}"]`);
+          if (varElement) {
+            varElement.textContent = `${key}: ${value}`;
+            varElement.classList.add(isNew ? "new" : "updated");
+            setTimeout(() => {
+              varElement.classList.remove("new", "updated");
+            }, 500);
+          }
+        });
+      }
+
+      function highlightLine(lineNum) {
+        document.querySelectorAll(".code-line").forEach((line) => {
+          line.classList.remove("active");
+          if (parseInt(line.dataset.line) < lineNum) {
+            line.classList.add("executed");
+          }
+        });
+        if (lineNum) {
+          const activeLine = document.querySelector(`[data-line="${lineNum}"]`);
+          if (activeLine) activeLine.classList.add("active");
+        }
+      }
+
+      function nextStep() {
+        if (currentStep >= steps.length) return;
+
+        const step = steps[currentStep];
+        const contextStack = document.getElementById("contextStack");
+        const explanation = document.getElementById("explanation");
+
+        // Update explanation
+        explanation.innerHTML = `<h3>Step ${currentStep + 1}</h3><p>${
+          step.explanation
+        }</p>`;
+
+        // Highlight current line
+        if (step.line) {
+          highlightLine(step.line);
+        }
+
+        // Handle different actions
+        if (step.action === "create-global") {
+          const globalContext = createContextElement(
+            "Global",
+            "🌍 Global Context",
+            "memory",
+            step.variables
+          );
+          contextStack.appendChild(globalContext);
+          contexts.push({ type: "global", element: globalContext });
+        } else if (step.action === "execute-global") {
+          // Change phase indicator
+          const globalContext = contexts[0].element;
+          const phaseIndicator =
+            globalContext.querySelector(".phase-indicator");
+          phaseIndicator.className = "phase-indicator phase-execution";
+          phaseIndicator.textContent = "⚡ Execution Phase";
+          if (step.update) {
+            updateVariables(0, step.update);
+          }
+          if (step.line) highlightLine(step.line);
+        } else if (step.action === "create-function") {
+          const funcContext = createContextElement(
+            "Function",
+            step.functionContext.name,
+            step.functionContext.phase,
+            step.functionContext.variables
+          );
+          contextStack.appendChild(funcContext);
+          contexts.push({ type: "function", element: funcContext });
+        } else if (step.action === "function-execution") {
+          const funcContext = contexts[contexts.length - 1].element;
+          const phaseIndicator = funcContext.querySelector(".phase-indicator");
+          phaseIndicator.className = "phase-indicator phase-execution";
+          phaseIndicator.textContent = "⚡ Execution Phase";
+          if (step.functionUpdate) {
+            updateVariables(contexts.length - 1, step.functionUpdate);
+          }
+        } else if (step.action === "pop-function") {
+          const funcContext = contexts.pop();
+          funcContext.element.classList.add("removing");
+          setTimeout(() => {
+            funcContext.element.remove();
+          }, 500);
+          if (step.update) {
+            setTimeout(() => {
+              updateVariables(0, step.update);
+            }, 300);
+          }
+        } else if (step.action === "complete") {
+          document.querySelectorAll(".code-line").forEach((line) => {
+            line.classList.remove("active");
+            line.classList.add("executed");
+          });
+        } else {
+          // Regular updates
+          if (step.update) {
+            updateVariables(0, step.update);
+          }
+          if (step.functionUpdate) {
+            updateVariables(contexts.length - 1, step.functionUpdate);
+          }
+        }
+
+        currentStep++;
+
+        // Update button state
+        const nextBtn = document.getElementById("nextBtn");
+        if (currentStep >= steps.length) {
+          nextBtn.disabled = true;
+          nextBtn.textContent = "Complete ✓";
+        }
+      }
+
+      function reset() {
+        currentStep = 0;
+        contexts = [];
+        document.getElementById("contextStack").innerHTML = "";
+        document.getElementById("explanation").innerHTML =
+          '<h3>Ready to Start!</h3><p>Click "Next Step" to begin the visualization.</p>';
+        document.querySelectorAll(".code-line").forEach((line) => {
+          line.classList.remove("active", "executed");
+        });
+        const nextBtn = document.getElementById("nextBtn");
+        nextBtn.disabled = false;
+        nextBtn.textContent = "Next Step →";
+
+        if (autoPlayInterval) {
+          clearInterval(autoPlayInterval);
+          autoPlayInterval = null;
+          document.getElementById("autoBtn").textContent = "▶ Auto Play";
+        }
+      }
+
+      function autoPlay() {
+        const autoBtn = document.getElementById("autoBtn");
+        if (autoPlayInterval) {
+          clearInterval(autoPlayInterval);
+          autoPlayInterval = null;
+          autoBtn.textContent = "▶ Auto Play";
+        } else {
+          autoBtn.textContent = "⏸ Pause";
+          autoPlayInterval = setInterval(() => {
+            if (currentStep >= steps.length) {
+              clearInterval(autoPlayInterval);
+              autoPlayInterval = null;
+              autoBtn.textContent = "▶ Auto Play";
+            } else {
+              nextStep();
+            }
+          }, 2000);
+        }
+      }
+    </script>
+  </body>
+</html>
