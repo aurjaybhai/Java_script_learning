@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+  </head>
+  <body>
+    <h1>Coffee and javascript</h1>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+  </body>
+  <script>
+    const start_button = document.getElementById("start");
+    const stop_button = document.getElementById("stop");
+    let intervalId; // So you can stop the interval later using the Stop button!
+    start_button.addEventListener("click", function () {
+      intervalId = setInterval(function () {
+        console.log("Hello_World", Date.now());
+      }, 1000);
+    });
+
+    stop_button.addEventListener("click", function () {
+      clearInterval(intervalId);
+    });
+    // setInterval(function () {
+    //   console.log("Hello_World", Date.now());
+    // }, 1000);
+
+    // const sayDate = function (str) {
+    //   console.log(str, Date.now());
+    // };
+    // const intervalId = setInterval(sayDate, 1000, "hello_world");
+
+    // clearInterval(intervalId);
+  </script>
+</html>
