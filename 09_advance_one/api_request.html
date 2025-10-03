@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BHAI_API</title>
+    <style>
+      body {
+        background-color: #1a1a1a;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column; /* ← ADD THIS LINE */
+        min-height: 100vh;
+        margin: 0;
+        color: #fff;
+      }
+
+      .photo-frame {
+        width: 400px;
+        height: 400px;
+        border: 12px solid #58a6ff;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+        overflow: hidden;
+        background-color: #2a2a2a;
+      }
+
+      .photo-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+
+        #followersCount {
+          font-size: 24px; /* Make text bigger */
+          font-weight: bold; /* Make it bold (optional) */
+          margin-top: 20px; /* Space above text */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Photo Frame -->
+    <div class="photo-frame" id="photoFrame">
+      <img
+        id="userAvatar"
+        src="https://via.placeholder.com/300"
+        alt="User Photo"
+      />
+    </div>
+    <p id="followersCount">Followers:</p>
+    <!-- 0 UNSENT Client has been created. open() not called yet. 1 OPENED open() has
+    been called. 2 HEADERS_RECEIVED send() has been called, and headers and
+    status are available. 3 LOADING Downloading; responseText holds partial
+    data. 4 DONE The operation is complete. -->
+
+    <script>
+      const requestURL = "https://api.github.com/users/hiteshchoudhary";
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", requestURL);
+      xhr.onreadystatechange = function () {
+        // Set up a LISTENER (this doesn't run yet, just sets up a "alarm")
+        console.log(xhr.readyState);
+        //   console.log("HERE");
+        if (xhr.readyState === 4) {
+          const data = JSON.parse(this.responseText);
+          // console.log(typeof data );
+          console.log(data.followers); // use responseText only bcoz due to case-sensitive
+
+          const userAvatar = document.getElementById("userAvatar");
+          userAvatar.src = data.avatar_url; // # Method 1
+
+          const followers_element = document.getElementById("followersCount");
+          followers_element.textContent = `Followers : ${data.followers}`;
+          // const frame = document.getElementById("photoFrame") // # MEthod 2
+          // frame.innerHTML = `<img id="userAvatar" src="${data.avatar_url}" alt="User Photo">`; // # MEthod 2
+          //                ^                          ^               ^                        ^
+          //              backtick                    ${} inserts variable value            backtick
+
+          // const frame = document.getElementById("photoFrame");
+          // frame.innerHTML = '<img id="userAvatar" src=data.avatar_url alt="user_image" >';
+        }
+      };
+
+      //   frame.innerHTML(
+      //     '<img id="userAvatar" src=data.avatar_url alt="user_image" '
+      //   ); // wrong method
+      //   frame.innerHTML =
+      // '<img id="userAvatar" src=data.avatar_url alt="user_image" >';
+      // console.log(xhr.readyState);
+      xhr.send();
+    </script>
+  </body>
+</html>
