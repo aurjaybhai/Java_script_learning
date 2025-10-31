@@ -1,9 +1,9 @@
-const name = "jyothi";
+const namee = "jyothi";
 const repoCount = 52;
 
 // (METHOD #1 )// console.log(name + repoCount + " Value"); // this is not recommeded as it's not proffessional
 
-console.log(`Hello my name is ${name} and my repo count is ${repoCount}`); // # Method #2
+console.log(`Hello my name is ${namee} and my repo count is ${repoCount}`); // # Method #2
 
 const gameName = new String("chess-Base-India"); // object
 console.log(gameName[0]); // It prints the output as "c"
@@ -20,7 +20,8 @@ const newString = gameName.substring(0, 4); // Method #1 **In substring you cann
 console.log(newString);
 
 const anotherString = gameName.slice(-8, 4); // Method #2(explained in the excali and slicing html file)
-console.log(anotherString);
+console.log(anotherString); // since js cannot move backwards so it will give
+// empty string
 
 const newStringOne = " rakesh";
 console.log(newStringOne);
@@ -35,11 +36,6 @@ console.log(url.includes("hitesh")); // returns true if hitesh exist in url
 
 console.log(gameName.split("-")); //  looks for the "-" in the chessbaseindia word and splits the word
 // according to that
-
-
-
-
-
 
 // console.log(gameName.__proto__);
 // console.log(gameName.toUpperCase);

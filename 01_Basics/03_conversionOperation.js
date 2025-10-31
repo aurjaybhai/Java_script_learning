@@ -1,7 +1,7 @@
 // let score = null
 
-// console.log(typeof score);  // #method_1
-// console.log(typeof(score)); // #method_2
+// console.log(typeof score);  // #method_1 "object"
+// console.log(typeof(score)); // #method_2 "object"
 
 // let valueInNumber = Number(score)
 // console.log(typeof valueInNumber); // output will "number"
